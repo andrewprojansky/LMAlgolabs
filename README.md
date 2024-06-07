@@ -133,3 +133,16 @@ These steps will ensure that the virtual environment is created, dependencies ar
 # Part 2: Evaluating Observables
 
 The second part of the tutorial is provided as a Jupyter notebook.
+To access the notebook, use the following steps depending on your operating system:
+
+### Unix/Mac
+1. Activate the virtual environment:
+   ```source venv/bin/activate```
+2. Open the notebook:
+   ```jupyter notebook notebook/tutorial_2.ipynb```
+   
+### Windows
+1. Activate the virtual environment:
+   ```venv\Scripts\activate```
+2. Open the notebook:
+   ```jupyter notebook notebook/tutorial_2.ipynb```
