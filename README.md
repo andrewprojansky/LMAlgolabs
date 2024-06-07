@@ -17,16 +17,20 @@ The following resources were consulted for this tutorial. You can consult them f
 
 With permission, code in the [APRIQUOT](https://github.com/APRIQuOt/VMC_with_LPTF) repository was used in the transformer training.
 
-**Check [how to use](#how-to-use) for usage on different platforms**
+## Considered Physical System
 
-
-## Physics of the Problem
+We are considering a two-dimensional array of Rydberg atoms on a square lattice.
+Those are described by the Rydberg Hamiltonian:
+$$
+\tilde{H} = - \frac{\Omega}{2} \sum_{i = 1}^N \left( \hat{\sigma}_i^x \right) - \delta \sum_{i = 1}^N \left ( \hat{n}_i \right ) + \sum_{i,j} \left ( V_{ij} \hat{n}_i \hat{n}_j \right )
+\end{equation}
+    \tilde{H} = - \frac{\Omega}{2} \sum_{i = 1}^N \left( \hat{\sigma}_i^x \right) - \delta \sum_{i = 1}^N \left ( \hat{n}_i \right ) + \sum_{i,j} \left ( V_{ij} \hat{n}_i \hat{n}_j \right ) 
+$$
 
 Let us consider the physics of the problem.
 
-- We are looking at a 2D lattice of Rydberg atoms
+- We are looking at a 2D square lattice of Rydberg atoms
 - We will be using the Rydberg Hamiltonian
-- We are assuming all-to-all interaction between all lattice sites
 
 ## Goals
 
