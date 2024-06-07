@@ -24,11 +24,7 @@ Those are described by the Rydberg Hamiltonian:
 ```math
 \hat{H} = - \frac{\Omega}{2} \sum_{i = 1}^N \left( \hat{\sigma}_i^x \right) - \delta \sum_{i = 1}^N \left ( \hat{n}_i \right ) + \sum_{i,j} \left ( V_{ij} \hat{n}_i \hat{n}_j \right)
 ```
-
-Let us consider the physics of the problem.
-
-- We are looking at a 2D square lattice of Rydberg atoms
-- We will be using the Rydberg Hamiltonian
+with $`\hat{\sigma}_i^x=|\mathrm{g}\rangle_i\langle\mathrm{r}\right|_i+|\mathrm{r}\rangle_i\langle\mathrm{g}\right|_i`$ and $`\hat{n}_i=\left|\mathrm{g}\rangle_i\langle\mathrm{g}\right|_i`$. Here $`\left|\mathrm{g}\right\rangle`$ and $`\left|\mathrm{r}\right\rangle`$ denote the ground and excited (Rydberg) state, accordingly.
 
 ## Goals
 
