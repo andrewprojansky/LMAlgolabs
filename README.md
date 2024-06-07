@@ -30,8 +30,8 @@ with $`\hat{\sigma}_i^x=\left|\mathrm{g}\right\rangle_i\left\langle\mathrm{r}\ri
 
 The learning objectives include
 
-- Seeing a deep learning model combined with variational ansatz to search for ground state
-- Learning how the Hamiltonian of the problem slots into a machine learning framework. Our loss function would be the expectation of the Hamiltonian
+- Seeing a language model as a variational wave function ansatz to search for ground state
+- Learning how the Hamiltonian of the problem slots into a machine learning framework. Our loss function will be the expectation value of the Hamiltonian
 - Using a trained network to compute observables of a system
 
 ## Models
@@ -53,6 +53,10 @@ You should have both of the following installed on your local machine one way or
 - [Python3](https://www.python.org)
 - [Git](https://git-scm.com/) (You may need to download the folders as a compressed folder if you do not have git installed)
 
+# Part 1: Getting to know the tools
+In this first part, we will explain the considered physical model in more detail and see how language models are implemented and used for quantum state representations.
+You can use the following steps depending on your operating system to get the tutorial running.
+Those steps will open an application which will guide you through the first part of the tutorial.
 
 ## How to Use
 
