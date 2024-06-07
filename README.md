@@ -1,4 +1,7 @@
-# Deep Learning for Physics
+![alt text]([http://url/to/img.png](https://www.usherbrooke.ca/ecoles-de-pointe/fileadmin/_processed_/9/f/csm_Bandeau_anglais_4ecdde00de.png))
+
+# AlgoLab Summer School 2024
+# Tutorial on Simulating Quantum Many-Body Systems with Language Models
 
 A tutorial to introduce Physicists to the idea of using Neural Networks for parameterizing wave functions. In our scenario, we combine variational monte carlo approach with a neural quantum state to search for the ground state of a 2D lattice of Rydberg atoms
 
