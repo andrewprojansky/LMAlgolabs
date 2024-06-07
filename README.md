@@ -3,9 +3,10 @@
 # AlgoLab Summer School 2024
 # Tutorial on Simulating Quantum Many-Body Systems with Language Models
 
-A tutorial to introduce Physicists to the idea of using Neural Networks for parameterizing wave functions. In our scenario, we combine variational monte carlo approach with a neural quantum state to search for the ground state of a 2D lattice of Rydberg atoms
+This tutorial gives some examples on using language models as a wave function ansatz for quantum many-body systems.
+In our scenario, we combine a variational Monte Carlo approach with recurrent neural networks (RNNs) and transformer models to find ground state representations in 2D Rydberg atom arrays.
 
-The following resources were consulted for this tutorial. You can consult them for further knowledge.
+The following resources were consulted for this tutorial. You can consult them for further knowledge:
 
 - [Sprague and Czischek, 2024](https://www.nature.com/articles/s42005-024-01584-y)
 - [Zhang and Ventra, 2023](https://physics.paperswithcode.com/paper/transformer-quantum-state-a-multi-purpose)
@@ -14,7 +15,7 @@ The following resources were consulted for this tutorial. You can consult them f
 - [Deep Learning Tutorial](https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/JAX/tutorial6/Transformers_and_MHAttention.html)
 - [QuCumber](https://github.com/PIQuIL/QuCumber)
 
-With permission, code in the [APRIQUOT](https://github.com/APRIQuOt/VMC_with_LPTF) repository was used in the transformer training
+With permission, code in the [APRIQUOT](https://github.com/APRIQuOt/VMC_with_LPTF) repository was used in the transformer training.
 
 **Check [how to use](#how-to-use) for usage on different platforms**
 
