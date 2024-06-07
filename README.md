@@ -1,4 +1,4 @@
-![alt text]([http://url/to/img.png](https://www.usherbrooke.ca/ecoles-de-pointe/fileadmin/_processed_/9/f/csm_Bandeau_anglais_4ecdde00de.png))
+!![Banner](banner.png)
 
 # AlgoLab Summer School 2024
 # Tutorial on Simulating Quantum Many-Body Systems with Language Models
