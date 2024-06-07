@@ -146,3 +146,9 @@ To access the notebook, use the following steps depending on your operating syst
    ```venv\Scripts\activate```
 2. Open the notebook:
    ```jupyter notebook notebook/tutorial_2.ipynb```
+
+In this part of the tutorial, you will write functions to evaluate observables using samples from a trained language model.
+To make the code development more efficient, the tutorial will load a pre-trained RNN from which samples are generated to evaluate observables.
+The notebook will guide you through the individual steps of this second part of the tutorial.
+
+# Part 3: Getting Experience
