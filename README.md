@@ -21,7 +21,9 @@ With permission, code in the [APRIQUOT](https://github.com/APRIQuOt/VMC_with_LPT
 
 We are considering a two-dimensional array of Rydberg atoms on a square lattice.
 Those are described by the Rydberg Hamiltonian:
-$$H = - \frac{\Omega}{2} \sum_{i = 1}^N \left( \hat{\sigma}_i^x \right) - \delta \sum_{i = 1}^N \left ( \hat{n}_i \right ) + \sum_{i,j} \left ( V_{ij} \hat{n}_i \hat{n}_j \right)$$
+```math
+\hat{H} = - \frac{\Omega}{2} \sum_{i = 1}^N \left( \hat{\sigma}_i^x \right) - \delta \sum_{i = 1}^N \left ( \hat{n}_i \right ) + \sum_{i,j} \left ( V_{ij} \hat{n}_i \hat{n}_j \right)
+```
 
 Let us consider the physics of the problem.
 
