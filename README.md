@@ -129,3 +129,7 @@ The advantage of the Make commands is the fine grained control you get over runn
     ```
 
 These steps will ensure that the virtual environment is created, dependencies are installed, and the application is run, all with a single command, making it easier for you to get started.
+
+# Part 2: Evaluating Observables
+
+The second part of the tutorial is provided as a Jupyter notebook.
