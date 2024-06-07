@@ -1,4 +1,4 @@
-!![Banner](banner.png)
+![Banner](banner.png)
 
 # AlgoLab Summer School 2024
 # Tutorial on Simulating Quantum Many-Body Systems with Language Models
