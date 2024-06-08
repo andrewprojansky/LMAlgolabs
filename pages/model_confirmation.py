@@ -50,7 +50,7 @@ if st.button("Confirm Model"):
             
         
             st.markdown(f"""
-                Welldone! You are ready to use {st.session_state.model_type}. Remember that you can 
+                Well done! You are ready to use {st.session_state.model_type}. Remember that you can 
                 always change your configuration by going back to the previous page. Remember to save your configuration.
             """)
 
@@ -60,7 +60,7 @@ if st.button("Confirm Model"):
 
 
             st.markdown("""
-                Now, let us look at the architecture of our approach. All the following have been 
+                Now, let us look at the architecture of the approach. All the following have been 
                 implemented except for the `local_energy`.
 
                 - :blue[Wave Function] - This comes from our model

@@ -64,7 +64,7 @@ VMCConfigDescription = {
         repeat_pre (bool)    -- Repeat the precondition (input) instead of projecting it out to match the token size.
 """ 
 class TransformerConfig(NamedTuple):
-    L: int = 64
+    L: int = 16 
     # Nh: int = 128
     patch: str = "1x1"
     # dropout: float = 0.0
@@ -156,19 +156,19 @@ RydbergConfigDescription = {
         sub_directory (str)  -- String to add to the end of the output directory (inside a subfolder). 
 """
 class TrainConfig(NamedTuple):
-    L: int = 64
-    Q: int = 1
-    K: int = 1024
+    L: int = 16
+    Q: int = 4
+    K: int = 256
     B: int = 1024
-    NLOOPS: int = 16
-    steps: int = 50000
-    lr: float = 0.0005
+    NLOOPS: int = 16 
+    steps: int = 1000
+    lr: float = 0.01
     seed: int = 1234
     dir: str = "TF"
     sub_directory: str = "1x1"
 
 TrainConfigDescription = {
-    "L": "L - Total lattice size (8x8 would be L=64)",	
+    "L": "L - Total lattice size (4x4 would be L=16)",	
     "Q": "Q - Number of minibatches per batch",
     "K": "K - Size of each minibatch",
     "B": "B - Total batch size (should be Q*K)",
@@ -222,7 +222,10 @@ def get_widget_group(config: NamedTuple, desc_dict, exclude_list: List[str], sid
                 # description = field_name.replace("_", " ").title()
                 description = desc_dict[field_name]
                 
-                widget_group[field_name] = get_widget(description, field_type, default_value) if field_name not in exclude_list else get_widget(description, field_type, default_value, True)
+                if field_name != "num_layers" and field_name != "nhead" and field_name != "num_epochs" and field_name != "learning_rate" and field_name != "n_samples" and field_name != "steps" and field_name != "lr":
+                        widget_group[field_name] = get_widget(description, field_type, default_value, True) if field_name not in exclude_list else get_widget(description, field_type, default_value, True)
+                else:
+                        widget_group[field_name] = get_widget(description, field_type, default_value, False) if field_name not in exclude_list else get_widget(description, field_type, default_value, True)
     
     return widget_group
 

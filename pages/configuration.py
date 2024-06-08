@@ -39,21 +39,23 @@ def main():
     # Body Section
     st.markdown(
         """
-            In this tutorial, we will be trying two model architectures - Recurrent Neural Network (see this [paper](https://arxiv.org/pdf/2203.04988)) and, 
-            Transformer (see this [paper](https://www.nature.com/articles/s42005-024-01584-y)). For those who might be interested in the detail, we will be using the Gated Recurrent Unit (GRU) flavour of the RNN. 
+            In this tutorial, we will be trying two model architectures - recurrent neural networks (see this [paper](https://arxiv.org/pdf/2203.04988)) and 
+            transformer models (see this [paper](https://www.nature.com/articles/s42005-024-01584-y)). For those who might be interested in the detail, we will be using the Gated Recurrent Unit (GRU) as the RNN cell. 
             On this page, you will be able to do three things:
             
             - Select which of the two models you would like to use
             - Configure the hyperparameters of the model
-            - Configure the hyperparameters of the Variational Monte Carlo (VMC) approach
+            - Configure the hyperparameters of the variational Monte Carlo (VMC) approach
 
 
-            You should see the controls on in the sidebar; your left. If not click the `>` button. In the sidebar, you will be able to select one of two models and see 
-            the parameters on the main page. You can also configure the hyperparameters of the model and the VMC approach. Remember to click the `Save Configuration` button 
+            You should see the controls in the sidebar on the left. If not click the `>` button. You can select one of the two language models and see 
+            the parameters on the main page. You can then also configure the hyperparameters of the model and the VMC approach. Remember to click the `Save Configuration` button 
             to save your configuration. Once saved, you can proceed to the next step.
             
             
-            **Note**: Disabled inputs are not configurable as they are set to default values.
+            **Note**: Disabled inputs are not configurable as they are set to default values. You will be able to adapt them at a later point in the tutorial.
+
+           :red[WARNING: Even though you can choose the transformer model here, you will experience quickly that it is computationally very expensive. You can try it out for very small network models and a few training iterations to see its power. However, trying it out in detail and finding hyperparameters that actually demonstrate the full power of the transformer model exceeds this tutorial.]
         """
     )
 
@@ -112,12 +114,10 @@ def main():
             with tab3:
                 rydbergconfig = get_widget_group(
                     RydbergConfig,
-                    RydbergConfigDescription, 
+                    RydbergConfigDescription,
                     []
                 )
                 rydberg_config = RydbergConfig(**rydbergconfig)
-
-
             
     add_vertical_space(3)
     if st.button("Save Configuration"):
