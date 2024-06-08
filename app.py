@@ -21,9 +21,12 @@ st.image(image_path)
 st.markdown(
     r"""
         ## Welcome
-        This app allows you to explore the parameterization of wave functions using neural networks. This tutorial will introduce 
-        you to the idea of using Neural Networks for parameterizing wave functions. In our scenario, we combine variational 
-        monte carlo approach with a neural quantum state to search for the ground state of a 2D lattice of Rydberg atoms.
+        This app allows you to explore the parameterization of wave functions using language 
+        models as artificial neural networks. This tutorial will introduce 
+        you to the idea of using language models as a wave function ansatz to represent quantum 
+        states. In our scenario, we combine a variational 
+        Monte Carlo approach with neural quantum state techniques to search for the ground 
+        state of a 2D lattice of Rydberg atoms.
 
         ## Acknowledgements
 
@@ -43,37 +46,35 @@ st.markdown(
 
         Let us consider the physics of the problem.
 
-        - We are looking at a 2D lattice of Rydberg atoms
-        - We are assuming all-to-all interaction among lattice sites
-        - The Hamiltonian is as follows
-
+        - We are looking at a 2D square lattice of Rydberg atoms
+        - Rydberg atoms can be prepared in a ground and a highly excited (Rydberg) state and we can consider them as qubits
+        - We are assuming all-to-all interactions among lattice sites
+        - The Rydberg Hamiltonian is as follows
         $$
         \begin{equation}
-            \tilde{H} = - \frac{\Omega}{2} \sum_{i = 1}^N \left( \hat{\sigma}_i^x \right) - \delta \sum_{i = 1}^N \left ( \hat{n}_i \right ) + \sum_{i,j} \left ( V_{ij} \hat{n}_i \hat{n}_j \right )
+            \hat{H} = - \frac{\Omega}{2} \sum_{i = 1}^N \left( \hat{\sigma}_i^x \right) - \delta \sum_{i = 1}^N \left ( \hat{n}_i \right ) + \sum_{i,j} \left ( V_{ij} \hat{n}_i \hat{n}_j \right )
         \end{equation} 
         $$
 
-        where $V_{ij} = \frac{\Omega R_b^6}{| \textbf{r}_i - \textbf{r}_j |^6}$ and $R_b$ is the Rydberg blockade radius.
+        with the van der Waals interaction  $V_{ij} = \frac{\Omega R_{\mathrm{b}}^6}{| \textbf{r}_i - \textbf{r}_j |^6}$. $R_{\mathrm{b}}$ is the Rydberg blockade radius within which any two excitations are penalized.
 
-        - $\Omega$ is the Rabi frequency
-        - $\delta$ is the detuning
-        - $\hat{\sigma}_i^x$ is the Pauli-X matrix
-        - $\hat{n}_i$ is the number operator
+        - $\Omega$ is the Rabi frequency describing Rabi flops between the two states
+        - $\delta$ is the detuning of the Rydberg state
+        - $\hat{\sigma}_i^x=\left|\mathrm{g}\right\rangle_i\left\langle\mathrm{r}\right|_i+\left|\mathrm{r}\right\rangle_i\left\langle\mathrm{g}\right|_i$ is the Pauli-$X$ matrix acting on qubit $i$
+        - $\hat{n}_i=\left|\mathrm{g}\right\rangle_i\left\langle\mathrm{g}\right|_i$ is the number operator acting on qubit $i$
         - Atoms at positions $\textbf{r}_i$ and $\textbf{r}_j$ interact through the van der Waals potential, $V_{ij}$
-        - $N$ is the number of lattice sites
+        - $N=N_x\times N_y$ is the total number of lattice sites, where we look at square lattices with $N_x=N_y$
         
-        Note that we set $\Omega = \delta = 1$ and $R_b = 7^{\frac{1}{2}}$. This is to put the system in the vicinity of transition between the ordered 
-        and striated phase.
-
-
+        Note that we set $\Omega = \delta = 1$ and $R_b = 7^{\frac{1}{2}}$ as default choice in this tutorial. This brings the system in the vicinity of transition between the disordered 
+        and the striated phase.
 
         ### A Bird's Eyeview of the Approach
-        - Step 1: Take some arbitrary parameterized wave function (neural network)
-        - Step 2: Sample from it
+        - Step 1: Parameterize a wave function with an ansatz (language models in our case)
+        - Step 2: Sample from the squared wave function amplitude
         - Step 3: Compute the expectation value of the energy
-        - Step 4: Vary your parameters using some optimization function
-        - Repeat Steps 2-4 until you reach the ground state
-        - Our training metric is the energy density of the system
+        - Step 4: Vary the variational parameters using an optimization (loss) function
+        - Repeat Steps 2-4 until convergence is reached
+        - To converge to the ground state, the loss function is the energy expectation value of the system
     """
 )
 
@@ -81,14 +82,6 @@ st.markdown(
 # st.image(training_image)
 st.markdown(
     r"""
-        ---
-
-        There are two parts of this exercise
-
-        - Train a model to search for the ground state energy. To get started, click the button below.
-        - Sample from a trained network and compute observables. To complete this exercise, visit the `notebook` folder in 
-        the root directory and consult the notebook, `off_diagonals.ipynb`
-
         HAVE FUN!
     """
 )
