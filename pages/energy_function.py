@@ -63,6 +63,7 @@ st.markdown(
 
     - :red[**WARNING**]: Only change the places where you find `CHANGE_ME`. Changing any other part of the code may result in an error.
     - :blue[**HINT**]: Remember that `delta` and `Omega` are the detuning and Rabi frequency respectively. They play crucial roles in the computation of the local energy.
+   - :red[**HINT**]: If you're training a transformer model, an output folder system called "TF" is created. The folder with the highest number is your most recent model. You can find the energy expectation value for all training steps in the file "DEBUG.npy", which contains an array that can be loaded into Python. The energy expectation value is stored in the first column of this array. 
     """
 )
 
@@ -250,6 +251,9 @@ if completed_code["type"] == "submit":
             try:
                 with st.spinner("Your Transformer model is training..."):
                     run_tf_model(st.session_state.model, st.session_state.full_opt, st.session_state.opt_dict)
+
+                    st.session_state.training_completed = True
+
             except Exception as e:
                 st.error(f"Error executing code: {e}")
 

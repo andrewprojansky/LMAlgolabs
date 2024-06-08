@@ -323,8 +323,8 @@ def run_tf_model(model, full_opt, opt_dict):
     mydir=setup_dir(opt_dict)
     orig_stdout = sys.stdout
 
-    full_opt.save(mydir+"\\settings.json")
-    f = open(mydir+'\\output.txt', 'w')
+    full_opt.save(mydir+"/settings.json")
+    f = open(mydir+'/output.txt', 'w')
     sys.stdout = f
     try:
         reg_train(opt_dict,(model,optimizer),printf=True,mydir=mydir)
