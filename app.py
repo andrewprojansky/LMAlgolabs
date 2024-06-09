@@ -14,7 +14,6 @@ st.title("Neural Networks for Wave Functions Parameterization")
 
 cwd = os.getcwd()
 image_path = os.path.join(cwd, "static", "nn_models.png")
-# training_image = os.path.join(cwd, "static", "training.png")
 st.image(image_path)
 
 # Body Section
@@ -79,7 +78,6 @@ st.markdown(
 )
 
 # Next Pages
-# st.image(training_image)
 st.markdown(
     r"""
         HAVE FUN!
@@ -106,34 +104,7 @@ with col1:
     st.page_link("pages/configuration.py", label="Get Started", icon=":material/arrow_forward:")
 
 
-footer="""<style>
-a:link , a:visited{
-color: blue;
-background-color: transparent;
-text-decoration: underline;
-}
 
-a:hover,  a:active {
-color: red;
-background-color: transparent;
-text-decoration: underline;
-}
-
-.footer {
-position: fixed;
-left: 0;
-bottom: 0;
-width: 100%;
-background-color: white;
-color: black;
-text-align: center;
-}
-</style>
-<div class="footer">
-<p><a style='display: block; text-align: center;' href="#" target="_blank">Neural Network Parameterization of Wave Functions</a></p>
-</div>
-"""
-# st.markdown(footer,unsafe_allow_html=True)
 
 
 
