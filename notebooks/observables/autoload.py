@@ -4,9 +4,9 @@ from flax import linen as nn
 from jax import numpy as jnp
 from flax import serialization
 from jax import random, jit, lax
-from dataclasses import dataclass
+from dataclasses import dataclass, field, KW_ONLY
 
-from typing import Union, Tuple, List, Any
+from typing import Union, Tuple, List, Any, Optional
 
 file_dir = os.path.abspath(os.path.join(os.path.dirname('__file__'), '.'))
 
@@ -47,23 +47,38 @@ class Autoload:
     num_hidden_units: int = 128
     sequence_length: int = 16
     saved_params_dir: str = os.path.join(file_dir, "saved_params", "model_params2.pkl")
+    use_my_params: Optional[bool] = False
+    KW_ONLY
+    my_model: Optional[Any] = field(default=None)
+    my_params: Optional[Any] = field(default=None)
     
     def __post_init__(self):
         self.rng = random.PRNGKey(1245)
-        self.model = RNNModel(output_dim=self.output_dim, num_hidden_units=self.num_hidden_units)
-        dummy_input = jnp.zeros((1, self.sequence_length, self.output_dim))
-        self.params_arch = self.model.init(random.PRNGKey(1234), dummy_input)
+        if self.use_my_params is False:
+            self.model = RNNModel(output_dim=self.output_dim, num_hidden_units=self.num_hidden_units)
+            dummy_input = jnp.zeros((1, self.sequence_length, self.output_dim))
+            self.params_arch = self.model.init(random.PRNGKey(1234), dummy_input)
+            
+            with open(self.saved_params_dir, "rb") as f:
+                self.param_bytes = f.read()
+        else:
+            if self.my_model is None:
+                raise ValueError("my_model must be provided when use_my_params is True")
+            if self.my_params is None:
+                raise ValueError("my_params must be provided when use_my_params is True")
+            
+            self.model = self.my_model
         
-        with open(self.saved_params_dir, "rb") as f:
-            self.param_bytes = f.read()
-
         self.load()
 
 
     def load(self):
         """Return loaded model and params
         """
-        self.params = serialization.from_bytes(self.params_arch, self.param_bytes)
+        if self.use_my_params is False:
+            self.params = serialization.from_bytes(self.params_arch, self.param_bytes)
+        else:
+            self.params = self.my_params
     
 
     def sample(self, num_samples: int = 1000) -> List[Union[float, Tuple[float, ...]]]:

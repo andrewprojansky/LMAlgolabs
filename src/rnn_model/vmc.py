@@ -1,7 +1,7 @@
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Optional, Callable, Any
 from abc import ABC, abstractmethod
 from rnn_model.helpers import get_all_interactions_jax
-from dataclasses import dataclass
+from dataclasses import dataclass, KW_ONLY
 from rnn_model.definitions import VMCConfig
 import jax.numpy as jnp
 from jax import nn as jnn
@@ -17,6 +17,7 @@ from flax import serialization
 from flax.training import checkpoints, train_state
 from orbax import checkpoint
 from flax.training import orbax_utils
+from tqdm.notebook import tqdm
 
 @dataclass
 class VMC(ABC):
@@ -27,11 +28,18 @@ class VMC(ABC):
     output_dim: int
     sequence_length: int
     num_hidden_units: int
+    KW_ONLY
+    delta: Union[int, float] = 1.0
+    Omega: Union[int, float] = 1.0
+    interactions_func: Optional[Callable] = None
+    interactions_input: Optional[Any] = None
+
 
     def __post_init__(self):
-        self.pairs, self.multipliers = get_all_interactions_jax(self.n)
-        self.Omega = 1.0
-        self.delta = 1.0
+        if self.interactions_func is None:
+            self.pairs, self.multipliers = get_all_interactions_jax(self.n)
+        else:
+            self.pairs, self.multipliers = self.interactions_func(self.n, self.interactions_input)
 
     
     
@@ -120,81 +128,46 @@ class VMC(ABC):
         return loss, e_loc
     
 
-    def train(self, rng_key, params, model):
+    def train(self, rng_key, params, model, return_params = False):
         chk_dir = "tmp"
         os.makedirs(chk_dir, exist_ok=True)
 
         ckpt_dir = '/tmp/flax_ckpt'
-        ckpt_dir2 = '/tmp/flax_ckpt2'
         if os.path.exists(ckpt_dir):
             shutil.rmtree(ckpt_dir) 
 
-        print('Training started')
 
         optimizer = optax.adam(learning_rate=self.learning_rate)
         opt_state = optimizer.init(params)
 
         loss_fn = self.get_loss
     
-        # opt_state = train_state.TrainState.create(
-        #     apply_fn=model.apply,
-        #     params=params,
-        #     tx=optimizer
-        # )
-        # params = opt_state.params
 
         @partial(jit, static_argnums=(3,))
         def step(params, rng_key, opt_state, get_loss=loss_fn):
             rng_key, new_key = random.split(rng_key)
 
             value, grads = value_and_grad(get_loss, has_aux=True)(params, rng_key, model)
-            # opt_state.apply_gradients(grads, params)
             updates, opt_state = optimizer.update(grads, opt_state, params)
             params = optax.apply_updates(params, updates)
             return new_key, params, opt_state, value
 
         energies = []
-        # options = checkpoint.CheckpointManagerOptions(max_to_keep=10, create=True)
-        # checkpoint_manager = checkpoint.CheckpointManager(
-        #     chk_dir, orbax_checkpointer, options)
-        
-        for i in range(self.num_epochs):
-            rng_key, params, opt_state, (loss, eloc) = step(params, rng_key, opt_state)
+        print('Training started')
+        # for i in range(self.num_epochs):
+        for _ in tqdm(range(self.num_epochs), desc="Epochs"):
+            rng_key, params, opt_state, (_, eloc) = step(params, rng_key, opt_state)
             energies.append(eloc)
-
-            if i % 100 == 0:
-                print(f'step {i}, loss: {loss}')
-            
-            # ckpt = {'model': opt_state}
-            # save_args = orbax_utils.save_args_from_target(ckpt)
-            # checkpoint_manager.save(step, ckpt, save_kwargs={'save_args': save_args})
-
-        
-        # ckpt = {'model': opt_state}
-        # orbax_checkpointer = checkpoint.PyTreeCheckpointer()
-        # save_args = orbax_utils.save_args_from_target(ckpt)
-        # orbax_checkpointer.save(ckpt_dir2, ckpt, save_args=save_args)
-
 
         bytes_output = serialization.to_bytes(params)
         with open('model_params3.pkl', 'wb') as f:
             f.write(bytes_output)
         
+        if return_params is True:
+            return energies, params
+        
+        print('Training completed')
         return energies
-    
-    
-    # @abstractmethod
-    # def local_energy(self, samples: List[Union[float, Tuple[float, ...]]], params, model, log_psi) -> List[float]:
-    #     """
-    #     Method to compute the energy function for given samples.
-        
-    #     Parameters:
-    #     - samples (List[Union[float, Tuple[float, ...]]]): List of samples.
-        
-    #     Returns:
-    #     - float: Energy function value.
-    #     """
-    #     raise NotImplementedError("Energy function not implemented")
     
     
     def local_energy(self, samples, params, model, log_psi) -> List[float]:
@@ -229,5 +202,6 @@ class VMC(ABC):
 
         # Total energy
         loc_e = transverse_field + chemical_potential + interaction_term
+
 
         return loc_e
