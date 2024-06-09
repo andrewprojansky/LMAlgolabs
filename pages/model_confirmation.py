@@ -1,9 +1,9 @@
+import os
 import streamlit as st
+from src.run import run
 from src.rnn_model.models import get_model
 from streamlit_extras.switch_page_button import switch_page
-from src.helpers import ModelType, RydbergConfig, TrainConfig, load_config, extract_args, get_tf_model
-# from src.tf_models.model_builder import *
-from src.run import run
+from src.helpers import ModelType, RydbergConfig, TrainConfig, load_config, extract_args, save_to_file
 
 
 # Set Page Configuration
@@ -34,10 +34,22 @@ if st.button("Confirm Model"):
     if config_set is False:
         st.write("Oops! No available configuration. Did you forget to save your configuration on the previous page?")
     else:
+        file_path = os.path.join(st.session_state.config_dir, "model")
         try:
             if st.session_state.model_type.name == ModelType.RNN.name:
                 model = get_model(st.session_state.model_type)(*st.session_state.model_config)
                 st.session_state.model = model
+                save_op = save_to_file(
+                    filename=file_path, 
+                    obj=st.session_state.model,
+                    save_type=st.session_state.save_type
+                )
+                if save_op.is_ok:
+                    print(save_op.unwrap())
+                    # Let session state know that the model has been confirmed
+                    st.session_state.model_confirmed = True
+                else:
+                    st.error(save_op.unwrap_err())
             else:
                 cnfgs = extract_args(st.session_state.model_type)
                 model, full_opt, opt_dict = run(cnfgs)
@@ -45,8 +57,23 @@ if st.button("Confirm Model"):
                 st.session_state.full_opt = full_opt
                 st.session_state.opt_dict = opt_dict
 
-            # Let session state know that the model has been confirmed
-            st.session_state.model_confirmed = True
+                save_op = save_to_file(
+                    filename=file_path,
+                    obj = {
+                        "model": st.session_state.model,
+                        "full_opt": st.session_state.full_opt,
+                        "opt_dict": st.session_state.opt_dict,
+                    },
+                    save_type=st.session_state.save_type
+                )
+
+                if save_op.is_ok:
+                    print(save_op.unwrap())
+                    # Let session state know that the model has been confirmed
+                    st.session_state.model_confirmed = True
+                else:
+                    st.error(save_op.unwrap_err())
+
             
         
             st.markdown(f"""

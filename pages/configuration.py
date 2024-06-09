@@ -1,14 +1,15 @@
 import os
+import shutil
+import pickle
 import streamlit as st
-# from startup import prepare_file_system
-# from rnn_model.definitions.enums import ModelType
-# from src.rnn_model.definitions.configs import VMCConfig, TransformerConfig, VMCModel
-# from typing import NamedTuple, get_type_hints, List, Dict
 from streamlit_extras.add_vertical_space import add_vertical_space
+
+
+from src.my_types import SaveType
+from src.helpers import TransformerConfigDescription
+from src.helpers import save_rnn, save_ptf, save_to_file
 from src.helpers import TransformerConfig, RNNConfig, VMCConfig
 from src.helpers import get_widget_group, ModelType, RydbergConfig, TrainConfig
-from src.helpers import save_rnn, save_ptf, save_lptf
-from src.helpers import TransformerConfigDescription
 from src.helpers import RydbergConfigDescription, TrainConfigDescription, VMCConfigDescription
 
 
@@ -31,7 +32,7 @@ def main():
     # Sidebar
     st.sidebar.title(
         """
-        Set the Parameters
+        Select Your Choice
         """
     )
 
@@ -118,9 +119,42 @@ def main():
                     []
                 )
                 rydberg_config = RydbergConfig(**rydbergconfig)
+
+
             
     add_vertical_space(3)
+
+    # Create storage directory
+    storage_dir = "CONFIG_STORAGE"
+    os.makedirs(storage_dir, exist_ok=True)
+    num_saved_configs = sum(os.path.isdir(os.path.join(storage_dir, entry)) for entry in os.listdir(storage_dir))
+    # Check number of configs already present in the directory
+
+    config_name = st.sidebar.text_input(
+        label = "Configuration Folder", 
+        value = f"Config_{num_saved_configs + 1}",
+        placeholder = "Name a folder for saving your configuration. You would need it later"
+    )   
+
+    # save_type = st.sidebar.selectbox(
+    #     label="Choose Serialization Type",
+    #     options=[t.name for t in SaveType],
+    # )
+
+    st.session_state.save_type = SaveType["PICKLE"]
+
+         
     if st.button("Save Configuration"):
+        config_path = os.path.join(storage_dir, config_name)
+        
+        try:
+            os.makedirs(config_path)
+            st.session_state.config_dir = config_path
+        except OSError:
+            st.error("It appears that this configuration name already exists")
+
+        st.session_state.config_path = os.path.join(config_path, "config")
+        
         st.session_state.model_type = ModelType[model_type]
         st.session_state.model_config = model_config
 
@@ -130,14 +164,50 @@ def main():
             st.session_state.vmc_config = VMCConfig(
                 **vmc_config
             )
-            save_rnn(model_config, st.session_state.vmc_config)
+
+            configuration_dictionary = {
+                "model_type": st.session_state.model_type,
+                "vmc_config": st.session_state.vmc_config,
+                "model_config": st.session_state.model_config ,
+            }
+
+            save_op = save_to_file(
+                st.session_state.config_path, 
+                configuration_dictionary,
+                st.session_state.save_type
+            )
+
+            if save_op.is_ok:
+                print(save_op.unwrap())
+                save_rnn(model_config, st.session_state.vmc_config)
+            else:
+                shutil.rmtree(st.session_state.config_dir)
+                st.error(save_op.unwrap_err())
 
         else:
             st.session_state.train_config = train_config
             st.session_state.rydberg_config = rydberg_config
-            save_ptf(model_config, train_config, rydberg_config)
+
+            configuration_dictionary = {
+                "model_type": st.session_state.model_type,
+                "train_config": st.session_state.train_config,
+                "rydberg_config": st.session_state.rydberg_config,
+                "model_config": st.session_state.model_config ,
+            }
+
+            save_op = save_to_file(
+                st.session_state.config_path, 
+                configuration_dictionary,
+                st.session_state.save_type
+            )
+
+            if save_op.is_ok:
+                print(save_op.unwrap())
+                save_ptf(model_config, train_config, rydberg_config)
+            else:
+                shutil.rmtree(st.session_state.config_dir)
+                st.text(save_op.unwrap_err())
         
-            
 
         st.write("Configuration Saved Successfully! You can now proceed to the next step.")
         st.session_state.configuration_saved = True

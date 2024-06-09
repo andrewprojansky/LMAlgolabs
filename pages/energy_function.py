@@ -4,20 +4,19 @@ import os
 import ast
 import copy
 import json
-import streamlit as st
 import textwrap
-import pickle
+import numpy as np
+import streamlit as st
+from typing import List
+import jax.numpy as jnp
+from jax import lax, random
+import matplotlib.pyplot as plt
 from code_editor import code_editor
 from streamlit_extras.let_it_rain import rain
 from streamlit_extras.switch_page_button import switch_page
 
-from src.helpers import ModelType, run_tf_model, state_flipper, fake_logpsi, check_flip_state, check_transverse_fn, extract_loc_e, LineCollector, meets_cond
 from src.rnn_model.vmc import VMC
-from jax import lax, random
-import jax.numpy as jnp
-import numpy as np
-from typing import List
-import matplotlib.pyplot as plt
+from src.helpers import ModelType, run_tf_model, fake_logpsi, check_flip_state, check_transverse_fn, LineCollector, meets_cond, save_to_file
 
 st.set_page_config(
     page_title="Energy Function - NQS Tutorial",
@@ -219,6 +218,9 @@ if completed_code["type"] == "submit":
             falling_speed=5,
             animation_length="10s",
         )
+
+        # initialize file path
+        file_path = os.path.join(st.session_state.config_dir, "energy_densities")
         if st.session_state.model_type.name == ModelType.RNN.name:
             try:
                 with st.spinner("Your RNN model is training..."):
@@ -239,9 +241,16 @@ if completed_code["type"] == "submit":
                     e_den = my_vmc.train(random.PRNGKey(123), params, st.session_state.model)
 
                     st.session_state.densities = [(i.mean() / st.session_state.vmc_config.sequence_length).item() for i in e_den]
-                    with open("reults.pkl", "wb") as f:
-                        pickle.dump(st.session_state.densities, f)
-                        
+
+                    save_to_file(
+                        filename=file_path, 
+                        obj=st.session_state.densities,
+                        save_type=st.session_state.save_type
+                    )
+
+                    # with open("reults.pkl", "wb") as f:
+                    #     pickle.dump(st.session_state.densities, f)
+
                     st.session_state.training_completed = True
 
                 energy_plot(st.session_state.densities)
@@ -256,6 +265,15 @@ if completed_code["type"] == "submit":
 
             except Exception as e:
                 st.error(f"Error executing code: {e}")
+
+
+        rain(
+            emoji="🎈",
+            font_size=100,
+            falling_speed=10,
+        )
+        st.success("CONGRATULATIONS! YOU COMPLETED THE MODEL TRAINING")
+        st.write("You can use the saved configuration/model to compute observables in the next exercise.")
 
 
 # Footer Navigation
