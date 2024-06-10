@@ -1,7 +1,7 @@
 from typing import List, Tuple, Union, Optional, Callable, Any
 from abc import ABC, abstractmethod
 from rnn_model.helpers import get_all_interactions_jax
-from dataclasses import dataclass, KW_ONLY
+from dataclasses import dataclass
 from rnn_model.definitions import VMCConfig
 import jax.numpy as jnp
 from jax import nn as jnn
@@ -28,7 +28,6 @@ class VMC(ABC):
     output_dim: int
     sequence_length: int
     num_hidden_units: int
-    KW_ONLY
     delta: Union[int, float] = 1.0
     Omega: Union[int, float] = 1.0
     interactions_func: Optional[Callable] = None
