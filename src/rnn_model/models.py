@@ -4,7 +4,7 @@ import flax.linen as nn
 from rnn_model.definitions import ModelType, ModelConfigType, RNNModelProtocol, TransformerModelProtocol, RNNConfigType, TransformerConfigType, QuantumModelProtocol
 from rnn_model.attention import EncoderBlock
 from rnn_model.errors import ModelTypeError
-
+from typing import Union
 
 
 
@@ -90,7 +90,7 @@ class ModelFactory:
         self.model = self.models[model_type]
     
 
-    def get_model(self, model_config: ModelConfigType) -> RNNModel | TransformerModel:
+    def get_model(self, model_config: ModelConfigType) -> Union[RNNModel, TransformerModel]:
         """
         Initialize the model with the given configuration.
 

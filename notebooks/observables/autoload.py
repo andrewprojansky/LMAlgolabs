@@ -4,7 +4,7 @@ from flax import linen as nn
 from jax import numpy as jnp
 from flax import serialization
 from jax import random, jit, lax
-from dataclasses import dataclass, field, KW_ONLY
+from dataclasses import dataclass, field
 
 from typing import Union, Tuple, List, Any, Optional
 
@@ -47,8 +47,7 @@ class Autoload:
     num_hidden_units: int = 128
     sequence_length: int = 16
     saved_params_dir: str = os.path.join(file_dir, "saved_params", "model_params2.pkl")
-    use_my_params: Optional[bool] = False
-    KW_ONLY
+    use_my_params: Optional[bool] = False    
     my_model: Optional[Any] = field(default=None)
     my_params: Optional[Any] = field(default=None)
     
