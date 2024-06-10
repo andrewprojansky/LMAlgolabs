@@ -140,17 +140,26 @@ To access the notebook, use the following steps depending on your operating syst
    ```source venv/bin/activate```
 2. Open the notebook:
    ```jupyter notebook```
-   Then navigate to the ```notebook``` folder and open the notebook ```tutorial_2.ipynb```.
+   Then navigate to the ```notebooks``` folder and open the notebook ```tutorial_2.ipynb```.
    
 ### Windows
 1. Activate the virtual environment:
    ```venv\Scripts\activate```
 2. Open the notebook:
    ```jupyter notebook```
-   Then navigate to the ```notebook``` folder and open the notebook ```tutorial_2.ipynb```.
+   Then navigate to the ```notebooks``` folder and open the notebook ```tutorial_2.ipynb```.
 
 In this part of the tutorial, you will write functions to evaluate observables using samples from a trained language model.
 To make the code development more efficient, the tutorial will load a pre-trained RNN from which samples are generated to evaluate observables.
 The notebook will guide you through the individual steps of this second part of the tutorial.
 
 # Part 3: Getting Experience
+
+The last part of the tutorial is also provided as a Jupyter notebook.
+You can access it the same way as the second tutorial, except that you now open the notebook called ```tutorial_3.ipynb``` in the ```notebooks``` folder.
+
+In this third part, you will combine your gathered knowledge and get some experience on representing ground states with recurrent neural networks.
+You can play around with different network and training parameters and investigate their effect on the accuracy with which the ground state is represented.
+You can further look at larger system sizes and different interaction types.
+This part of the tutorial provides freedom for exploration. The notebook will guide you through the steps of choosing the parameters and training the network. 
+Based on this you can choose your own observables to investigate and your own approach in gathering information about the behaviour of the network.
