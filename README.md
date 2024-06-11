@@ -67,7 +67,7 @@ Follow these instructions for usage. [Max/Unix](#unixmac), [Windows](#windows), 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/lere01/tutorial_nqs.git
+    git clone https://github.com/APRIQuOt/abriQot.git
     ```
 
 2. Change directory:
@@ -89,7 +89,7 @@ Remember to run `chmod +x run.sh` to make the script executable before running. 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/lere01/tutorial_nqs.git
+    git clone https://github.com/APRIQuOt/abriQot.git
     ```
 
 2. Change directory:
